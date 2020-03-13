@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.dictionaryapp.viewmodel.MainActivityViewModel" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_gradient"
+        android:orientation="vertical"
+        tools:context=".ui.IMainActivityPage">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10sp"
+            android:layout_marginTop="30sp"
+            android:layout_marginRight="10sp"
+            android:orientation="horizontal">
+
+            <SearchView
+                style="@style/SearchViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="60sp"
+                android:layout_weight="1" />
+            <!--<ImageButton
+                style="@style/SearchButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="60sp"
+                android:layout_weight="5"
+                android:src="@drawable/ic_search_black_24dp">
+            </ImageButton>-->
+        </LinearLayout>
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/view_pager_main_activity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10sp"
+                    android:layout_marginRight="10sp"/>
+            </ScrollView>
+        </androidx.viewpager.widget.ViewPager>
+
+    </LinearLayout>
+</layout>
+

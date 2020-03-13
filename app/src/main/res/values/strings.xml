@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">DictMillan</string>
+    <string name="search_hint">Type your word here</string>
+</resources>

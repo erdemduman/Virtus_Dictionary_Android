@@ -18,8 +18,4 @@
         <item name="android:queryHint">@string/search_hint</item>
     </style>
 
-    <style name="SearchButtonStyle" parent="Widget.AppCompat.SearchView">
-        <item name="android:background">@drawable/white_rounded_bg</item>
-    </style>
-
 </resources>

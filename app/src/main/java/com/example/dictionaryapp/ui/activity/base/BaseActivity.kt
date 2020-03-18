@@ -6,37 +6,41 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
+import com.example.dictionaryapp.ui.base.IBaseUI
 import com.example.dictionaryapp.viewmodel.base.BaseViewModel
 import com.example.dictionaryapp.util.ViewModelFactory
 
 
-abstract class BaseActivity<VM : BaseViewModel, DB : ViewDataBinding, ND : Any> : AppCompatActivity(), BaseUI{
+abstract class BaseActivity<VM : BaseViewModel, DB : ViewDataBinding, ND : Any> :
+    AppCompatActivity(), IBaseUI<VM, DB, ND> {
 
-    val binding by lazy {
+    override val binding by lazy {
         DataBindingUtil.setContentView(this, getLayoutRes()) as DB
     }
 
-    val viewModel by lazy {
-        ViewModelProvider(this, ViewModelFactory(getParameter())).get(getViewModel())
+    override val viewModel by lazy {
+        ViewModelProvider(this, ViewModelFactory(passParameter())).get(getViewModel())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initViewModel()
-        initView()
         initObserver()
+        initView()
     }
 
     @LayoutRes
-    protected abstract fun getLayoutRes(): Int
+    abstract override fun getLayoutRes(): Int
 
-    protected abstract fun getViewModel(): Class<out VM>
+    abstract override fun getViewModel(): Class<out VM>
 
-    protected abstract fun initView()
+    abstract override fun initParameter()
 
-    protected abstract fun initViewModel()
+    abstract override fun initView()
 
-    protected abstract fun initObserver()
+    abstract override fun initViewModel()
 
-    protected abstract fun getParameter(): ND
+    abstract override fun initObserver()
+
+    abstract override fun passParameter(): ND
 }

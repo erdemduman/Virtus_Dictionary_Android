@@ -7,6 +7,10 @@ data class SearchResponse(
     @SerializedName("word") val word: String,
     @SerializedName("phonetic") val phonetic: String,
     @SerializedName("origin") val origin: String,
+    @SerializedName("meaning") val meaning: MeaningResponse
+) : Serializable
+
+data class MeaningResponse(
     @SerializedName("meaning") val meaning: Map<String, List<KindResponse>>
 ) : Serializable
 

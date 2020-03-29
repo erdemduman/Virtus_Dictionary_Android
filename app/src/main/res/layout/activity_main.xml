@@ -1,58 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <data>
+
+        <import type="com.example.dictionaryapp.ui.converter.Converter" />
+
         <variable
             name="viewModel"
             type="com.example.dictionaryapp.viewmodel.MainActivityViewModel" />
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background_gradient"
-        android:orientation="vertical"
-        tools:context=".ui.IMainActivityPage">
+        android:background="@drawable/background_gradient">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10sp"
-            android:layout_marginTop="30sp"
-            android:layout_marginRight="10sp"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <SearchView
+                android:id="@+id/word_search_view"
                 style="@style/SearchViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="60sp"
-                android:layout_weight="1" />
-            <!--<ImageButton
-                style="@style/SearchButtonStyle"
+                android:layout_marginLeft="10sp"
+                android:layout_marginTop="30sp"
+                android:layout_marginRight="10sp"
+                android:imeOptions="actionSearch" />
+
+            <com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
+                android:id="@+id/worm_dots_indicator_activity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20sp"
+                android:visibility="gone"
+                app:dotsColor="@color/textWhite"
+                app:dotsSize="16dp"
+                app:dotsSpacing="4dp"
+                app:dotsStrokeColor="@color/textWhite"
+                app:dotsStrokeWidth="2dp" />
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/view_pager_main_activity"
                 android:layout_width="match_parent"
-                android:layout_height="60sp"
-                android:layout_weight="5"
-                android:src="@drawable/ic_search_black_24dp">
-            </ImageButton>-->
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20sp" />
+
         </LinearLayout>
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/view_pager_main_activity"
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20sp">
+            android:layout_height="match_parent"
+            android:background="@color/transparentBlack"
+            android:visibility="@{Converter.boolToVisibility(viewModel.showDialog)}" />
 
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10sp"
-                    android:layout_marginRight="10sp"/>
-            </ScrollView>
-        </androidx.viewpager.widget.ViewPager>
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="@{Converter.boolToVisibility(viewModel.showDialog)}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10sp"
+                android:text="@string/please_wait"
+                android:textSize="30sp"
+                android:visibility="@{Converter.boolToVisibility(viewModel.showDialog)}" />
+        </LinearLayout>
+
+    </FrameLayout>
+
 </layout>
 

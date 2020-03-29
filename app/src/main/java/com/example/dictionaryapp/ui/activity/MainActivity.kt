@@ -1,21 +1,35 @@
 package com.example.dictionaryapp.ui.activity
 
+import android.content.Context
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.SearchView
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.example.dictionaryapp.R
-import com.example.dictionaryapp.ui.activity.base.BaseActivity
 import com.example.dictionaryapp.databinding.ActivityMainBinding
 import com.example.dictionaryapp.model.SearchResponse
+import com.example.dictionaryapp.ui.activity.base.BaseActivity
 import com.example.dictionaryapp.ui.adapter.ViewPagerAdapter
 import com.example.dictionaryapp.ui.fragmentview.SearchOuterFragment
 import com.example.dictionaryapp.viewmodel.MainActivityViewModel
+import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
 
-class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding, MainActivityViewModel.Parameter>() {
+class MainActivity :
+    BaseActivity<MainActivityViewModel, ActivityMainBinding, MainActivityViewModel.Parameter>() {
 
     private lateinit var viewPager: ViewPager
     private lateinit var viewPagerAdapter: PagerAdapter
+    private lateinit var searchView: SearchView
+    private lateinit var viewpagerIndicator: WormDotsIndicator
+    private var responseSize: Int? = null
+
+    private val inputManager by lazy {
+        applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    }
 
     override fun getLayoutRes(): Int = R.layout.activity_main
 
@@ -29,13 +43,24 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding, Ma
         binding.viewModel = this.viewModel
     }
 
-    override fun initView() {
-        viewPager = findViewById(R.id.view_pager_main_activity)
-        viewModel.retroCall()
+    override fun initObserver() {
+        viewModel.searchResponse.observe(this, Observer { response -> initViewPager(response) })
     }
 
-    override fun initObserver() {
-        viewModel.searchResponse.observe(this, Observer { response -> initViewPager(response)})
+    override fun initView() {
+        viewPager = findViewById(R.id.view_pager_main_activity)
+        searchView = findViewById(R.id.word_search_view)
+        viewpagerIndicator = findViewById(R.id.worm_dots_indicator_activity)
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                inputManager.toggleSoftInput(0, 0)
+                viewModel.searchCall(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean = false
+        })
     }
 
     override fun passParameter(): MainActivityViewModel.Parameter {
@@ -48,14 +73,25 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding, Ma
     private fun initViewPager(response: List<SearchResponse>) {
         viewPagerAdapter = ViewPagerAdapter(getPages(response), supportFragmentManager)
         viewPager.adapter = viewPagerAdapter
+        initViewPagerIndicator()
     }
 
-    private fun getPages(response: List<SearchResponse>): List<Fragment>{
-        var items: MutableList<Fragment> = arrayListOf()
-        items.add(SearchOuterFragment.create(response[0]))
-        items.add(SearchOuterFragment.create(response[1]))
-        items.add(SearchOuterFragment.create(response[2]))
+    private fun initViewPagerIndicator() {
+        viewpagerIndicator.setViewPager(viewPager)
+        viewpagerIndicator.visibility = if (responseSize!! > 1) View.VISIBLE else View.GONE
+    }
 
+    private fun getPages(response: List<SearchResponse>): List<Fragment> {
+        var items: MutableList<Fragment> = arrayListOf()
+        for (i in response) {
+            items.add(SearchOuterFragment.create(i))
+        }
+        responseSize = items.size
         return items
+    }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.stopCall()
     }
 }

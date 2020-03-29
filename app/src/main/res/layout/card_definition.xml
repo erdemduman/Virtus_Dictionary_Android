@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="15sp"
+    android:background="@android:color/transparent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/definition_card_definition"
+        style="@style/DefinitionTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Here is a long definition and I don't know what else I can write here." />
+
+    <TextView
+        android:id="@+id/definition_card_example"
+        style="@style/ExampleTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15sp"
+        android:layout_marginBottom="20sp"
+        android:text="Here is the example sentence." />
+
+    <View
+        android:id="@+id/falseMargin"
+        android:layout_width="match_parent"
+        android:layout_height="20sp"
+        android:visibility="gone"/>
+
+    <include
+        android:id="@+id/definition_separator"
+        layout="@layout/separator" />
+
+</LinearLayout>

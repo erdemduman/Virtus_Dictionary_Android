@@ -12,29 +12,37 @@ import io.reactivex.schedulers.Schedulers
 
 class MainActivityViewModel(data: Any) : BaseViewModel() {
 
-    private var myCompositeDisposable: CompositeDisposable? = null
-    lateinit var searchResponse: MutableLiveData<List<SearchResponse>>
+    private var disposable: CompositeDisposable? = null
+    var searchResponse: MutableLiveData<List<SearchResponse>>
+    var showDialog: MutableLiveData<Boolean>
 
     private val navigationData: Parameter by lazy {
         data as Parameter
     }
 
     init {
-        myCompositeDisposable = CompositeDisposable()
+        disposable = CompositeDisposable()
         searchResponse = MutableLiveData()
+        showDialog = MutableLiveData()
     }
 
-    fun retroCall() {
+    fun searchCall(word: String?) {
         val retrofit = ISearchApi.create(AppConstant.BASE_URL)
-        myCompositeDisposable?.add(
-            retrofit.meaning(word = "mean")
+        disposable?.add(
+            retrofit.meaning(word = word)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
+                .doOnSubscribe { showDialog.value = true }
+                .doOnTerminate { showDialog.value = false }
                 .subscribe(
-                    { value ->  searchResponse.value = value},
+                    { value -> searchResponse.value = value },
                     { error -> Log.d("OnError", error.message) }
                 )
         )
+    }
+
+    fun stopCall() {
+        disposable?.dispose()
     }
 
     class Parameter : BaseViewModel.Parameter()

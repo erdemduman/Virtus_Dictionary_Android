@@ -24,6 +24,7 @@ abstract class BaseActivity<VM : BaseViewModel, DB : ViewDataBinding, ND : Any> 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding.lifecycleOwner = this
         initViewModel()
         initObserver()
         initView()

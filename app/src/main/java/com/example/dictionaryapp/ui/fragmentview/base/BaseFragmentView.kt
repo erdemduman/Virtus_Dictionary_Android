@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import com.example.dictionaryapp.databinding.SearchInnerFragmentBinding
 
 abstract class BaseFragmentView<DB : ViewDataBinding> : Fragment() {
 

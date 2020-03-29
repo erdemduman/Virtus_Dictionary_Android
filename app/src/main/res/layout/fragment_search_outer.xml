@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="self"
+            type="com.example.dictionaryapp.ui.fragmentview.SearchOuterFragment" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/WordTitleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@{self.word.toUpperCase()}" />
+
+        <TextView
+            style="@style/WordPhoneticStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@{self.phonetic}" />
+
+        <com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
+            android:id="@+id/worm_dots_indicator_outer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20sp"
+            android:visibility="gone"
+            app:dotsColor="@color/textWhite"
+            app:dotsSize="16dp"
+            app:dotsSpacing="4dp"
+            app:dotsStrokeColor="@color/textWhite"
+            app:dotsStrokeWidth="2dp" />
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/inner_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15sp" />
+    </LinearLayout>
+</layout>
+

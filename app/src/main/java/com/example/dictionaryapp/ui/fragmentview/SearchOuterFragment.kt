@@ -10,19 +10,21 @@ import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.example.dictionaryapp.R
 import com.example.dictionaryapp.constant.BundleKey
-import com.example.dictionaryapp.databinding.SearchOuterFragmentBinding
-import com.example.dictionaryapp.model.KindResponse
+import com.example.dictionaryapp.databinding.FragmentSearchOuterBinding
 import com.example.dictionaryapp.model.SearchResponse
 import com.example.dictionaryapp.ui.adapter.ViewPagerAdapter
 import com.example.dictionaryapp.ui.fragmentview.base.BaseFragmentView
-import java.io.Serializable
+import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
 
-class SearchOuterFragment : BaseFragmentView<SearchOuterFragmentBinding>() {
+class SearchOuterFragment : BaseFragmentView<FragmentSearchOuterBinding>() {
 
     private lateinit var args: SearchResponse
 
     private lateinit var viewPager: ViewPager
     private lateinit var viewPagerAdapter: PagerAdapter
+    private lateinit var viewPagerIndicator: WormDotsIndicator
+
+    private var responseSize: Int? = null
 
     lateinit var word: MutableLiveData<String>
     lateinit var phonetic: MutableLiveData<String>
@@ -37,7 +39,7 @@ class SearchOuterFragment : BaseFragmentView<SearchOuterFragmentBinding>() {
         return fragmentView
     }
 
-    override fun getLayoutRes(): Int = R.layout.search_outer_fragment
+    override fun getLayoutRes(): Int = R.layout.fragment_search_outer
 
     override fun initParameter() {
         args = arguments?.getSerializable(BundleKey.searchOuterFragment) as SearchResponse
@@ -51,23 +53,33 @@ class SearchOuterFragment : BaseFragmentView<SearchOuterFragmentBinding>() {
         word = MutableLiveData()
         phonetic = MutableLiveData()
         origin = MutableLiveData()
-        
+
         word.value = args.word
         phonetic.value = args.phonetic
         origin.value = args.origin
 
         viewPager = fragmentView.findViewById(R.id.inner_view_pager)
-        viewPagerAdapter = ViewPagerAdapter(getPages(), childFragmentManager!!)
-        viewPager.adapter = viewPagerAdapter
+        viewPagerIndicator = fragmentView.findViewById(R.id.worm_dots_indicator_outer)
+        initViewPager()
     }
 
-    private fun getPages(): MutableList<Fragment>{
-        var items: MutableList<Fragment> = arrayListOf()
-        items.add(SearchInnerFragment.create(args.meaning))
-        items.add(SearchInnerFragment.create(args.meaning))
-        items.add(SearchInnerFragment.create(args.meaning))
-        items.add(SearchInnerFragment.create(args.meaning))
+    private fun initViewPager() {
+        viewPagerAdapter = ViewPagerAdapter(getPages(), childFragmentManager)
+        viewPager.adapter = viewPagerAdapter
+        initViewPagerIndicator()
+    }
 
+    private fun initViewPagerIndicator(){
+        viewPagerIndicator.setViewPager(viewPager)
+        viewPagerIndicator.visibility = if(responseSize!! > 1) View.VISIBLE else View.GONE
+    }
+
+    private fun getPages(): MutableList<Fragment> {
+        var items: MutableList<Fragment> = arrayListOf()
+        for ((k, v) in args.meaning) {
+            items.add(SearchInnerFragment.create(k, v))
+        }
+        responseSize = args.meaning.size
         return items
     }
 

@@ -18,4 +18,38 @@
         <item name="android:queryHint">@string/search_hint</item>
     </style>
 
+    <style name="TextStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_marginLeft">10sp</item>
+        <item name="android:layout_marginRight">10sp</item>
+    </style>
+
+    <style name="TitleStyle" parent="TextStyle">
+
+    </style>
+
+    <style name="WordTitleStyle" parent="TitleStyle">
+        <item name="android:textSize">40sp</item>
+        <item name="fontFamily">@font/roboto_bold</item>
+    </style>
+
+    <style name="WordPhoneticStyle" parent="TitleStyle">
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/roboto_italic</item>
+    </style>
+
+    <style name="SubtitleTextStyle" parent="TitleStyle">
+        <item name="android:textSize">30sp</item>
+        <item name="fontFamily">@font/roboto_medium</item>
+    </style>
+
+    <style name="DefinitionTextStyle" parent="TextStyle">
+        <item name="android:textSize">25sp</item>
+        <item name="android:fontFamily">@font/roboto</item>
+    </style>
+
+    <style name="ExampleTextStyle" parent="TextStyle">
+        <item name="android:textSize">15sp</item>
+        <item name="fontFamily">@font/roboto_light_italic</item>
+    </style>
+
 </resources>

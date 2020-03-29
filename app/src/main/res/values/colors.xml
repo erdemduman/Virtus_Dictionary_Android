@@ -5,4 +5,14 @@
     <color name="colorPrimaryLight">#370000</color>
     <color name="colorAccent">#D81B60</color>
     <color name="textWhite">#AAFFFFFF</color>
+    <color name="transparentBlack">#F2000000</color>
+    <color name="sulphurDark">#CAC531</color>
+    <color name="sulphurLight">#F3F9A7</color>
+    <color name="metallicGold">#8D7419</color>
+    <color name="metallicGoldMedium">#BD9A17</color>
+    <color name="metallicGoldLight">#C3A01A</color>
+    <color name="gray">#A3A3A3</color>
+    <color name="purple">#B000EC</color>
+    <color name="crimson">#CB202A</color>
+    <color name="crimsonLight">#C88E91</color>
 </resources>

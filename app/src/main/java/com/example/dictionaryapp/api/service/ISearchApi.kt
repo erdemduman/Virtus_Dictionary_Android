@@ -1,6 +1,5 @@
 package com.example.dictionaryapp.api.service
 
-import com.example.dictionaryapp.constant.AppConstant
 import com.example.dictionaryapp.model.SearchResponse
 import io.reactivex.Observable
 import retrofit2.Retrofit
@@ -12,7 +11,7 @@ import retrofit2.http.Path
 interface ISearchApi {
 
     @GET("{lang}/{word}")
-    fun meaning(@Path("lang") lang: String = "en", @Path("word") word: String): Observable<List<SearchResponse>>
+    fun meaning(@Path("lang") lang: String = "en", @Path("word") word: String?): Observable<List<SearchResponse>>
 
     companion object Factory {
         fun create(baseUrl: String): ISearchApi{

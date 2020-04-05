@@ -1,4 +1,4 @@
-package com.example.dictionaryapp.ui.fragmentview.base
+package com.example.dictionaryapp.ui.customView.fragmentView.base
 
 import android.view.LayoutInflater
 import android.view.View

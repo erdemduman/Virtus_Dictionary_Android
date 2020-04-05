@@ -5,7 +5,9 @@
 
         <variable
             name="self"
-            type="com.example.dictionaryapp.ui.fragmentview.SearchInnerFragment" />
+            type="com.example.dictionaryapp.ui.customView.fragmentView.SearchInnerFragment" />
+
+        <import type="java.util.Locale" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -19,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20sp"
-            android:text="@{self.title.toUpperCase()}" />
+            android:text="@{self.title.toUpperCase(Locale.ENGLISH)}" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/definition_recycler_view"

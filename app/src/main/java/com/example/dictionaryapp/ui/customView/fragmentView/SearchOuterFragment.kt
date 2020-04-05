@@ -1,4 +1,4 @@
-package com.example.dictionaryapp.ui.fragmentview
+package com.example.dictionaryapp.ui.customView.fragmentView
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +13,7 @@ import com.example.dictionaryapp.constant.BundleKey
 import com.example.dictionaryapp.databinding.FragmentSearchOuterBinding
 import com.example.dictionaryapp.model.SearchResponse
 import com.example.dictionaryapp.ui.adapter.ViewPagerAdapter
-import com.example.dictionaryapp.ui.fragmentview.base.BaseFragmentView
+import com.example.dictionaryapp.ui.customView.fragmentView.base.BaseFragmentView
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
 
 class SearchOuterFragment : BaseFragmentView<FragmentSearchOuterBinding>() {
@@ -81,6 +81,10 @@ class SearchOuterFragment : BaseFragmentView<FragmentSearchOuterBinding>() {
         }
         responseSize = args.meaning.size
         return items
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
     companion object Factory {

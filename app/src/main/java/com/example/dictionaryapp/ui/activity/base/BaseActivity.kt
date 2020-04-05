@@ -1,5 +1,6 @@
 package com.example.dictionaryapp.ui.activity.base
 
+import android.content.Context
 import android.os.Bundle
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
@@ -7,8 +8,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
 import com.example.dictionaryapp.ui.base.IBaseUI
-import com.example.dictionaryapp.viewmodel.base.BaseViewModel
 import com.example.dictionaryapp.util.ViewModelFactory
+import com.example.dictionaryapp.viewmodel.base.BaseViewModel
+import java.util.*
 
 
 abstract class BaseActivity<VM : BaseViewModel, DB : ViewDataBinding, ND : Any> :
@@ -29,7 +31,7 @@ abstract class BaseActivity<VM : BaseViewModel, DB : ViewDataBinding, ND : Any> 
         initObserver()
         initView()
     }
-
+    
     @LayoutRes
     abstract override fun getLayoutRes(): Int
 

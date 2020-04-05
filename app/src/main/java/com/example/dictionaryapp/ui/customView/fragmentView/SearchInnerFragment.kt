@@ -1,4 +1,4 @@
-package com.example.dictionaryapp.ui.fragmentview
+package com.example.dictionaryapp.ui.customView.fragmentView
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,7 +12,7 @@ import com.example.dictionaryapp.constant.BundleKey
 import com.example.dictionaryapp.databinding.FragmentSearchInnerBinding
 import com.example.dictionaryapp.model.KindResponse
 import com.example.dictionaryapp.ui.adapter.DefinitionRecyclerViewAdapter
-import com.example.dictionaryapp.ui.fragmentview.base.BaseFragmentView
+import com.example.dictionaryapp.ui.customView.fragmentView.base.BaseFragmentView
 
 class SearchInnerFragment : BaseFragmentView<FragmentSearchInnerBinding>() {
 

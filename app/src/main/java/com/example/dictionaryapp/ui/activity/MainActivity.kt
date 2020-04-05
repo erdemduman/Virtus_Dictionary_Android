@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
-import androidx.core.content.ContextCompat.getSystemService
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.PagerAdapter
@@ -14,7 +14,7 @@ import com.example.dictionaryapp.databinding.ActivityMainBinding
 import com.example.dictionaryapp.model.SearchResponse
 import com.example.dictionaryapp.ui.activity.base.BaseActivity
 import com.example.dictionaryapp.ui.adapter.ViewPagerAdapter
-import com.example.dictionaryapp.ui.fragmentview.SearchOuterFragment
+import com.example.dictionaryapp.ui.customView.fragmentView.SearchOuterFragment
 import com.example.dictionaryapp.viewmodel.MainActivityViewModel
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
 
@@ -45,6 +45,8 @@ class MainActivity :
 
     override fun initObserver() {
         viewModel.searchResponse.observe(this, Observer { response -> initViewPager(response) })
+        viewModel.showNoConnection.observe(this, Observer { _ -> showNoConnectionToast()})
+        viewModel.showNoSuchWord.observe(this, Observer { _ -> showNoSuchWordToast() })
     }
 
     override fun initView() {
@@ -84,10 +86,19 @@ class MainActivity :
     private fun getPages(response: List<SearchResponse>): List<Fragment> {
         var items: MutableList<Fragment> = arrayListOf()
         for (i in response) {
-            items.add(SearchOuterFragment.create(i))
+            if (i.meaning.isNotEmpty())
+                items.add(SearchOuterFragment.create(i))
         }
         responseSize = items.size
         return items
+    }
+
+    private fun showNoConnectionToast() {
+        Toast.makeText(applicationContext, R.string.network_error, Toast.LENGTH_SHORT).show();
+    }
+
+    private fun showNoSuchWordToast(){
+        Toast.makeText(applicationContext, R.string.no_results_found, Toast.LENGTH_LONG).show();
     }
 
     override fun onStop() {

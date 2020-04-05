@@ -6,7 +6,9 @@
 
         <variable
             name="self"
-            type="com.example.dictionaryapp.ui.fragmentview.SearchOuterFragment" />
+            type="com.example.dictionaryapp.ui.customView.fragmentView.SearchOuterFragment" />
+
+        <import type="java.util.Locale" />
     </data>
 
     <LinearLayout
@@ -20,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@{self.word.toUpperCase()}" />
+            android:text="@{self.word.toUpperCase(Locale.ENGLISH)}" />
 
         <TextView
             style="@style/WordPhoneticStyle"

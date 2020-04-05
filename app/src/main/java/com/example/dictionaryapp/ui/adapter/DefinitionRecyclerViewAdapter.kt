@@ -8,21 +8,26 @@ import androidx.core.view.marginBottom
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dictionaryapp.R
 import com.example.dictionaryapp.model.KindResponse
+import java.util.*
 
-class DefinitionRecyclerViewAdapter(private val items: List<KindResponse>) : RecyclerView.Adapter<DefinitionRecyclerViewAdapter.DefinitionViewHolder>() {
+class DefinitionRecyclerViewAdapter(private val items: List<KindResponse>) :
+    RecyclerView.Adapter<DefinitionRecyclerViewAdapter.DefinitionViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DefinitionViewHolder {
-        var view = LayoutInflater.from(parent.context).inflate(R.layout.card_definition, parent, false)
+        var view =
+            LayoutInflater.from(parent.context).inflate(R.layout.card_definition, parent, false)
         return DefinitionViewHolder(view)
     }
 
     override fun getItemCount(): Int = items.size
 
+    @ExperimentalStdlibApi
     override fun onBindViewHolder(holder: DefinitionViewHolder, position: Int) {
         var item = items[position]
         setViewHolderVisibility(holder, item)
         setSeparatorVisibility(holder, position)
     }
 
+    @ExperimentalStdlibApi
     private fun setViewHolderVisibility(holder: DefinitionViewHolder, item: KindResponse) {
         var nullCounter = 0
 
@@ -35,7 +40,7 @@ class DefinitionRecyclerViewAdapter(private val items: List<KindResponse>) : Rec
         when (nullCounter) {
             0 -> {
                 holder.definition.text = item.definition
-                holder.example.text = item.example.capitalize() + "."
+                holder.example.text = changeExampleCharacteristic(item.example)
                 holder.falseMargin.visibility = View.GONE
             }
             1 -> {
@@ -49,6 +54,18 @@ class DefinitionRecyclerViewAdapter(private val items: List<KindResponse>) : Rec
                 holder.falseMargin.visibility = View.GONE
             }
         }
+    }
+
+    @ExperimentalStdlibApi
+    private fun changeExampleCharacteristic(example: String): String {
+        var cap = example.trimStart('\n')
+            .trimStart(' ')
+            .capitalize(Locale.ENGLISH)
+
+        return if (cap[cap.length - 1] == '?' ||
+            cap[cap.length - 1] == '!' ||
+            cap[cap.length - 1] == '.'
+        ) cap else "$cap."
     }
 
     private fun setSeparatorVisibility(holder: DefinitionViewHolder, position: Int) {

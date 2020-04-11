@@ -11,10 +11,11 @@ import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.example.dictionaryapp.R
 import com.example.dictionaryapp.databinding.ActivityMainBinding
+import com.example.dictionaryapp.model.DefinitionResponse
 import com.example.dictionaryapp.model.SearchResponse
 import com.example.dictionaryapp.ui.activity.base.BaseActivity
 import com.example.dictionaryapp.ui.adapter.ViewPagerAdapter
-import com.example.dictionaryapp.ui.customView.fragmentView.SearchOuterFragment
+import com.example.dictionaryapp.ui.customView.fragmentView.SearchFragment
 import com.example.dictionaryapp.viewmodel.MainActivityViewModel
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
 
@@ -45,7 +46,7 @@ class MainActivity :
 
     override fun initObserver() {
         viewModel.searchResponse.observe(this, Observer { response -> initViewPager(response) })
-        viewModel.showNoConnection.observe(this, Observer { _ -> showNoConnectionToast()})
+        viewModel.showNoConnection.observe(this, Observer { _ -> showNoConnectionToast() })
         viewModel.showNoSuchWord.observe(this, Observer { _ -> showNoSuchWordToast() })
     }
 
@@ -72,7 +73,7 @@ class MainActivity :
         return navigationData
     }
 
-    private fun initViewPager(response: List<SearchResponse>) {
+    private fun initViewPager(response: SearchResponse) {
         viewPagerAdapter = ViewPagerAdapter(getPages(response), supportFragmentManager)
         viewPager.adapter = viewPagerAdapter
         initViewPagerIndicator()
@@ -83,12 +84,26 @@ class MainActivity :
         viewpagerIndicator.visibility = if (responseSize!! > 1) View.VISIBLE else View.GONE
     }
 
-    private fun getPages(response: List<SearchResponse>): List<Fragment> {
+    private fun getPages(response: SearchResponse): List<Fragment> {
         var items: MutableList<Fragment> = arrayListOf()
-        for (i in response) {
-            if (i.meaning.isNotEmpty())
-                items.add(SearchOuterFragment.create(i))
+        var paramList: HashMap<String, MutableList<DefinitionResponse>?> = HashMap()
+
+        for (i in response.definitions) {
+            if (i.definition.isNotEmpty()) {
+                if (!paramList.containsKey(i.type))
+                    paramList[i.type] = mutableListOf()
+
+                paramList[i.type]?.add(i)
+            }
         }
+
+        for ((k, v) in paramList) {
+            items.add(SearchFragment.create(SearchFragment.Parameter().apply {
+                this.type = k
+                this.content = v as List<DefinitionResponse>
+            }))
+        }
+
         responseSize = items.size
         return items
     }
@@ -97,7 +112,7 @@ class MainActivity :
         Toast.makeText(applicationContext, R.string.network_error, Toast.LENGTH_SHORT).show();
     }
 
-    private fun showNoSuchWordToast(){
+    private fun showNoSuchWordToast() {
         Toast.makeText(applicationContext, R.string.no_results_found, Toast.LENGTH_LONG).show();
     }
 

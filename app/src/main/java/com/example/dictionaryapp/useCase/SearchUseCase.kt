@@ -1,10 +1,9 @@
-package com.example.dictionaryapp.api.usecase
+package com.example.dictionaryapp.useCase
 
-import android.accounts.NetworkErrorException
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.dictionaryapp.api.service.ISearchApi
-import com.example.dictionaryapp.api.usecase.base.BaseUseCase
+import com.example.dictionaryapp.useCase.base.BaseUseCase
 import com.example.dictionaryapp.constant.AppConstant
 import com.example.dictionaryapp.model.SearchResponse
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -23,7 +22,7 @@ class SearchUseCase : BaseUseCase() {
     var showDialog: MutableLiveData<Boolean> = MutableLiveData()
     var showNoConnection: MutableLiveData<Boolean> = MutableLiveData()
     var showNoSuchWord: MutableLiveData<Boolean> = MutableLiveData()
-    var response: MutableLiveData<List<SearchResponse>> = MutableLiveData()
+    var response: MutableLiveData<SearchResponse> = MutableLiveData()
 
     fun execute(parameter: Parameter) {
         var data = parameter

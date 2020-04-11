@@ -7,10 +7,11 @@ import android.widget.TextView
 import androidx.core.view.marginBottom
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dictionaryapp.R
-import com.example.dictionaryapp.model.KindResponse
+import com.example.dictionaryapp.model.DefinitionResponse
+import com.example.dictionaryapp.ui.customView.fragmentView.SearchFragment
 import java.util.*
 
-class DefinitionRecyclerViewAdapter(private val items: List<KindResponse>) :
+class DefinitionRecyclerViewAdapter(private val items: List<DefinitionResponse>) :
     RecyclerView.Adapter<DefinitionRecyclerViewAdapter.DefinitionViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DefinitionViewHolder {
         var view =
@@ -28,7 +29,7 @@ class DefinitionRecyclerViewAdapter(private val items: List<KindResponse>) :
     }
 
     @ExperimentalStdlibApi
-    private fun setViewHolderVisibility(holder: DefinitionViewHolder, item: KindResponse) {
+    private fun setViewHolderVisibility(holder: DefinitionViewHolder, item: DefinitionResponse) {
         var nullCounter = 0
 
         if (item.definition == null)
@@ -39,12 +40,12 @@ class DefinitionRecyclerViewAdapter(private val items: List<KindResponse>) :
 
         when (nullCounter) {
             0 -> {
-                holder.definition.text = item.definition
+                holder.definition.text = item.definition.capitalize(Locale.ENGLISH)
                 holder.example.text = changeExampleCharacteristic(item.example)
                 holder.falseMargin.visibility = View.GONE
             }
             1 -> {
-                holder.definition.text = item.definition
+                holder.definition.text = item.definition.capitalize(Locale.ENGLISH)
                 holder.example.visibility = View.GONE
                 holder.falseMargin.visibility = View.VISIBLE
             }

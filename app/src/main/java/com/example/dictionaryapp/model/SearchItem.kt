@@ -5,13 +5,15 @@ import java.io.Serializable
 
 data class SearchResponse(
     @SerializedName("word") val word: String,
-    @SerializedName("phonetic") val phonetic: String,
+    @SerializedName("pronunciation") val pronunciation: String,
     @SerializedName("origin") val origin: String,
-    @SerializedName("meaning") val meaning: Map<String, ArrayList<KindResponse>>
+    @SerializedName("definitions") val definitions: List<DefinitionResponse>
 ) : Serializable
 
-data class KindResponse(
+data class DefinitionResponse(
+    @SerializedName("type") val type: String,
     @SerializedName("definition") val definition: String,
     @SerializedName("example") val example: String,
-    @SerializedName("synonyms") val synonyms: ArrayList<String>
+    @SerializedName("image_url") val image_url: String,
+    @SerializedName("emoji") val emoji: String
 ) : Serializable

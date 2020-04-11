@@ -4,4 +4,5 @@
     <string name="please_wait">Please wait...</string>
     <string name="network_error">Network Error</string>
     <string name="no_results_found">No results found</string>
+    <string name="request_timeout">Request timed out</string>
 </resources>

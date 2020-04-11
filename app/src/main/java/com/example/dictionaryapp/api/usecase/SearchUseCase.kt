@@ -11,6 +11,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import retrofit2.HttpException
+import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 class SearchUseCase : BaseUseCase() {
@@ -23,6 +24,7 @@ class SearchUseCase : BaseUseCase() {
     var showDialog: MutableLiveData<Boolean> = MutableLiveData()
     var showNoConnection: MutableLiveData<Boolean> = MutableLiveData()
     var showNoSuchWord: MutableLiveData<Boolean> = MutableLiveData()
+    var showRequestTimeout: MutableLiveData<Boolean> = MutableLiveData()
     var response: MutableLiveData<List<SearchResponse>> = MutableLiveData()
 
     fun execute(parameter: Parameter) {
@@ -34,17 +36,23 @@ class SearchUseCase : BaseUseCase() {
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe { showDialog.value = true }
                 .doOnTerminate { showDialog.value = false }
-                .doOnError { exception ->
-                    if (exception is UnknownHostException)
-                        showNoConnection.value = true
-                    else if (exception is HttpException)
-                        showNoSuchWord.value = true
-                }
+                .retry { count, throwable -> count < 3 && throwable is SocketTimeoutException }
                 .subscribe(
                     { value -> response.value = value },
-                    { error -> Log.d("OnError", error.message) }
+                    { error ->
+                        if (error is UnknownHostException)
+                            showNoConnection.value = true
+                        else if (error is HttpException)
+                            showNoSuchWord.value = true
+                        else if (error is SocketTimeoutException)
+                            showRequestTimeout.value = true
+                    }
                 )
         )
+    }
+
+    fun clear() {
+        disposable?.clear()
     }
 
     fun stop() {

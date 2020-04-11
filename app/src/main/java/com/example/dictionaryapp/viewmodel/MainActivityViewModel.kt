@@ -17,6 +17,7 @@ class MainActivityViewModel(data: Any) : BaseViewModel() {
     var showDialog: MutableLiveData<Boolean> = MutableLiveData()
     var showNoConnection: MutableLiveData<Boolean> = MutableLiveData()
     var showNoSuchWord: MutableLiveData<Boolean> = MutableLiveData()
+    var showRequestTimeout: MutableLiveData<Boolean> = MutableLiveData()
 
     private val navigationData: Parameter by lazy { data as Parameter }
     private val searchUseCase: SearchUseCase = SearchUseCase()
@@ -26,12 +27,17 @@ class MainActivityViewModel(data: Any) : BaseViewModel() {
         searchUseCase.response.observeForever { newValue -> searchResponse.value = newValue }
         searchUseCase.showNoConnection.observeForever { newValue -> showNoConnection.value = newValue }
         searchUseCase.showNoSuchWord.observeForever { newValue -> showNoSuchWord.value = newValue }
+        searchUseCase.showRequestTimeout.observeForever { newValue -> showRequestTimeout.value = newValue }
     }
 
     fun searchCall(word: String?) {
         searchUseCase.execute(SearchUseCase.Parameter().apply {
             this.word = word
         })
+    }
+
+    fun clearCall() {
+        searchUseCase.clear()
     }
 
     fun stopCall() {

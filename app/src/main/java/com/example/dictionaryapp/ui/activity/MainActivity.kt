@@ -47,6 +47,7 @@ class MainActivity :
         viewModel.searchResponse.observe(this, Observer { response -> initViewPager(response) })
         viewModel.showNoConnection.observe(this, Observer { _ -> showNoConnectionToast()})
         viewModel.showNoSuchWord.observe(this, Observer { _ -> showNoSuchWordToast() })
+        viewModel.showRequestTimeout.observe(this, Observer { _ ->  showRequestTimeout()})
     }
 
     override fun initView() {
@@ -94,15 +95,29 @@ class MainActivity :
     }
 
     private fun showNoConnectionToast() {
-        Toast.makeText(applicationContext, R.string.network_error, Toast.LENGTH_SHORT).show();
+        Toast.makeText(applicationContext, R.string.network_error, Toast.LENGTH_SHORT).show()
     }
 
     private fun showNoSuchWordToast(){
-        Toast.makeText(applicationContext, R.string.no_results_found, Toast.LENGTH_LONG).show();
+        Toast.makeText(applicationContext, R.string.no_results_found, Toast.LENGTH_LONG).show()
+    }
+
+    private fun showRequestTimeout(){
+        Toast.makeText(applicationContext, R.string.request_timeout, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.clearCall()
     }
 
     override fun onStop() {
         super.onStop()
+        viewModel.clearCall()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
         viewModel.stopCall()
     }
 }

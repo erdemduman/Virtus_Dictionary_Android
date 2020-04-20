@@ -3,11 +3,11 @@
 
     <data>
 
-        <import type="com.example.dictionaryapp.ui.converter.Converter" />
+        <import type="com.virtusdictionary.app.ui.converter.Converter" />
 
         <variable
             name="viewModel"
-            type="com.example.dictionaryapp.viewmodel.MainActivityViewModel" />
+            type="com.virtusdictionary.app.viewmodel.MainActivityViewModel" />
     </data>
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"

@@ -17,6 +17,7 @@ import com.virtusdictionary.app.ui.adapter.ViewPagerAdapter
 import com.virtusdictionary.app.ui.customView.fragmentView.SearchOuterFragment
 import com.virtusdictionary.app.viewmodel.MainActivityViewModel
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
+import com.virtusdictionary.app.ui.popup.ToastDialog
 
 class MainActivity :
     BaseActivity<MainActivityViewModel, ActivityMainBinding, MainActivityViewModel.Parameter>() {
@@ -45,9 +46,7 @@ class MainActivity :
 
     override fun initObserver() {
         viewModel.searchResponse.observe(this, Observer { response -> initViewPager(response) })
-        viewModel.showNoConnection.observe(this, Observer { _ -> showNoConnectionToast() })
-        viewModel.showNoSuchWord.observe(this, Observer { _ -> showNoSuchWordToast() })
-        viewModel.showRequestTimeout.observe(this, Observer { _ -> showRequestTimeout() })
+        viewModel.toast.observe(this, Observer { observable -> showToast(observable) })
     }
 
     override fun initView() {
@@ -94,16 +93,8 @@ class MainActivity :
         return items
     }
 
-    private fun showNoConnectionToast() {
-        Toast.makeText(applicationContext, R.string.network_error, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun showNoSuchWordToast() {
-        Toast.makeText(applicationContext, R.string.no_results_found, Toast.LENGTH_LONG).show()
-    }
-
-    private fun showRequestTimeout() {
-        Toast.makeText(applicationContext, R.string.request_timeout, Toast.LENGTH_SHORT).show()
+    private fun showToast(toast: ToastDialog) {
+        Toast.makeText(applicationContext, getString(toast.text.value!!), toast.duration.value!!).show()
     }
 
     override fun onPause() {

@@ -5,12 +5,13 @@ import com.virtusdictionary.app.api.service.ISearchApi
 import com.virtusdictionary.app.api.useCase.base.BaseUseCase
 import com.virtusdictionary.app.constant.AppConstant
 import com.virtusdictionary.app.model.SearchResponse
+import com.virtusdictionary.app.util.ApiException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import retrofit2.HttpException
 import java.net.SocketTimeoutException
-import java.net.UnknownHostException
+import com.virtusdictionary.app.util.toApiException
+import java.lang.Exception
 
 class SearchUseCase : BaseUseCase() {
 
@@ -26,25 +27,19 @@ class SearchUseCase : BaseUseCase() {
     var response: MutableLiveData<List<SearchResponse>> = MutableLiveData()
 
     fun execute(parameter: Parameter) {
-        var data = parameter
+        var word = parameter.word
+        var callback = parameter.callback
 
         disposable?.add(
-            retrofit.meaning(word = data.word)
+            retrofit.meaning(word = word)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .doOnSubscribe { showDialog.value = true }
-                .doOnTerminate { showDialog.value = false }
+                .doOnSubscribe { callback?.onReady() }
+                .doOnTerminate { callback?.onDone() }
                 .retry { count, throwable -> count < 3 && throwable is SocketTimeoutException }
                 .subscribe(
-                    { value -> response.value = value },
-                    { error ->
-                        if (error is UnknownHostException)
-                            showNoConnection.value = true
-                        else if (error is HttpException)
-                            showNoSuchWord.value = true
-                        else if (error is SocketTimeoutException)
-                            showRequestTimeout.value = true
-                    }
+                    { value -> callback?.onSuccess(value) },
+                    { error -> callback?.onFail(error.toApiException()) }
                 )
         )
     }
@@ -57,8 +52,7 @@ class SearchUseCase : BaseUseCase() {
         disposable?.dispose()
     }
 
-    class Parameter {
+    class Parameter : BaseUseCase.Parameter<List<SearchResponse>, ApiException>() {
         var word: String? = null
     }
-
 }

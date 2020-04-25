@@ -1,4 +1,4 @@
-# DictMillan dictionary is a lightweight, easy-to-use English dictionary for Android platforms.
+# DictMillan dictionary is a lightweight, easy-to-use English dictionary for Android platform.
 
 <p float="left">
   <img src="images/ss1.jpeg" width="250" height="500"/>

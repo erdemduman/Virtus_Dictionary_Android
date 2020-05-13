@@ -20,12 +20,6 @@ class SearchUseCase : BaseUseCase() {
     }
     private val disposable: CompositeDisposable? = CompositeDisposable()
 
-    var showDialog: MutableLiveData<Boolean> = MutableLiveData()
-    var showNoConnection: MutableLiveData<Boolean> = MutableLiveData()
-    var showNoSuchWord: MutableLiveData<Boolean> = MutableLiveData()
-    var showRequestTimeout: MutableLiveData<Boolean> = MutableLiveData()
-    var response: MutableLiveData<List<SearchResponse>> = MutableLiveData()
-
     fun execute(parameter: Parameter) {
         var word = parameter.word
         var callback = parameter.callback

@@ -2,7 +2,7 @@ package com.virtusdictionary.app.util
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.virtusdictionary.app.viewmodel.MainActivityViewModel
+import com.virtusdictionary.app.ui.viewmodel.MainActivityViewModel
 
 class ViewModelFactory(private val navigationData: Any) : ViewModelProvider.Factory {
 

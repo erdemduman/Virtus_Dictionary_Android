@@ -1,6 +1,6 @@
 package com.virtusdictionary.app.api.service
 
-import com.virtusdictionary.app.model.SearchResponse
+import com.virtusdictionary.app.data.SearchResponse
 import io.reactivex.Observable
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
